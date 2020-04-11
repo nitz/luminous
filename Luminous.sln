@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luminous", "Luminous\Luminous.csproj", "{2B793A9A-8B34-4D81-9907-C18707ACA440}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luminous.Windows.Forms", "Luminous.Windows.Forms\Luminous.Windows.Forms.csproj", "{D5761A90-93E9-4E30-9E57-855A408E170C}"
@@ -33,5 +35,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B22330DF-EA58-46A1-B0C8-C462F4629C11}
 	EndGlobalSection
 EndGlobal
