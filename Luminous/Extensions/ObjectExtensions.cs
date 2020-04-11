@@ -43,7 +43,7 @@
         {
             if ((@this == null && typeof(T).IsValueType))
             {
-                throw new InvalidCastException(nameof(@this), "Contract assertion not met: !(@this == null && typeof(T).IsValueType)");
+                throw new InvalidCastException("Contract assertion not met: !(@this == null && typeof(T).IsValueType)");
             }
 
             var type = typeof(T);
