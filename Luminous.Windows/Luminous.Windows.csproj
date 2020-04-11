@@ -106,7 +106,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\key\Luminous.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\key\eai.luminous.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -163,7 +163,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="..\..\..\key\Luminous.snk">
+    <None Include="..\key\eai.luminous.snk">
       <Link>Luminous.snk</Link>
     </None>
     <AppDesigner Include="Properties\" />

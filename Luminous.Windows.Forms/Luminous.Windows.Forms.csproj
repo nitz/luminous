@@ -104,7 +104,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\key\Luminous.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\key\eai.luminous.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -206,7 +206,7 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\key\Luminous.snk">
+    <None Include="..\key\eai.luminous.snk">
       <Link>Luminous.snk</Link>
     </None>
   </ItemGroup>
