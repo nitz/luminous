@@ -1,26 +1,7 @@
-﻿#region License
-// Copyright © 2014 Łukasz Świątkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-namespace System
+﻿namespace System
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -40,7 +21,10 @@ namespace System
         /// <summary>Checks whether the object can be converted to the provided type.</summary>
         public static bool CanConvert(this object @this, Type conversionType, IFormatProvider formatProvider = null)
         {
-            Contract.Requires<ArgumentNullException>(conversionType != null);
+            if (conversionType == null)
+            {
+                throw new ArgumentNullException(nameof(conversionType), "Contract assertion not met: conversionType != null");
+            }
 
             try
             {
@@ -57,7 +41,10 @@ namespace System
         /// <summary>Converts the object to the provided type.</summary>
         public static T Convert<T>(this object @this, IFormatProvider formatProvider = null)
         {
-            Contract.Requires<InvalidCastException>(!(@this == null && typeof(T).IsValueType));
+            if ((@this == null && typeof(T).IsValueType))
+            {
+                throw new InvalidCastException(nameof(@this), "Contract assertion not met: !(@this == null && typeof(T).IsValueType)");
+            }
 
             var type = typeof(T);
             var result = Convert(@this, type, formatProvider);
@@ -72,7 +59,10 @@ namespace System
         /// <summary>Converts the object to the provided type.</summary>
         public static object Convert(this object @this, Type conversionType, IFormatProvider formatProvider = null)
         {
-            Contract.Requires<ArgumentNullException>(conversionType != null);
+            if (conversionType == null)
+            {
+                throw new ArgumentNullException(nameof(conversionType), "Contract assertion not met: conversionType != null");
+            }
 
             return System.Convert.ChangeType(@this, conversionType, formatProvider);
         }

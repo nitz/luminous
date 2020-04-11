@@ -1,27 +1,8 @@
-﻿#region License
-// Copyright © 2014 Łukasz Świątkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Text;
     using System.Windows.Forms;
@@ -34,7 +15,10 @@ namespace System.Windows.Forms
         /// </summary>
         public static bool IsHandleCreatedAnywhere(this Control @this)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
+            if (@this == null)
+            {
+                throw new ArgumentNullException(nameof(@this), "Contract assertion not met: @this != null");
+            }
             lock (@this)
             {
                 Control control = @this;
@@ -52,8 +36,14 @@ namespace System.Windows.Forms
 
         public static void SafeInvoke(this Control @this, Action action)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Requires<ArgumentNullException>(action != null);
+            if (@this == null)
+            {
+                throw new ArgumentNullException(nameof(@this), "Contract assertion not met: @this != null");
+            }
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action), "Contract assertion not met: action != null");
+            }
 
             if (@this == null)
             {
@@ -94,8 +84,14 @@ namespace System.Windows.Forms
 
         public static TResult SafeInvoke<TResult>(this Control @this, Func<TResult> func)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Requires<ArgumentNullException>(func != null);
+            if (@this == null)
+            {
+                throw new ArgumentNullException(nameof(@this), "Contract assertion not met: @this != null");
+            }
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func), "Contract assertion not met: func != null");
+            }
 
             TResult result = default(TResult);
             SafeInvoke(@this, () =>
@@ -107,7 +103,10 @@ namespace System.Windows.Forms
 
         public static bool IsInDesignMode(this Control target)
         {
-            Contract.Requires<ArgumentNullException>(target != null);
+            if (target == null)
+            {
+                throw new ArgumentNullException(nameof(target), "Contract assertion not met: target != null");
+            }
 
             for (Control control = target; control != null; control = control.Parent)
             {
@@ -122,7 +121,10 @@ namespace System.Windows.Forms
 
         public static bool IsInRuntimeMode(this Control target)
         {
-            Contract.Requires<ArgumentNullException>(target != null);
+            if (target == null)
+            {
+                throw new ArgumentNullException(nameof(target), "Contract assertion not met: target != null");
+            }
 
             for (Control control = target; control != null; control = control.Parent)
             {

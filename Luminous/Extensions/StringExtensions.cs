@@ -1,26 +1,7 @@
-﻿#region License
-// Copyright © 2014 Łukasz Świątkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-namespace System
+﻿namespace System
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -35,15 +16,10 @@ namespace System
     /// <summary>Extension methods for the String class.</summary>
     public static class StringExtensions
     {
-        #region Coalesce
-
-        [Pure]
         public static string Coalesce(this string @this, string other)
         {
             return !string.IsNullOrEmpty(@this) ? @this : other;
         }
-
-        [Pure]
         public static string Coalesce(this string @this, params string[] values)
         {
             if (!string.IsNullOrEmpty(@this) || values == null || values.Length == 0) return @this;
@@ -64,89 +40,89 @@ namespace System
             }
             return null;
         }
-
-        [Pure]
         public static string CoalesceWithEmpty(this string @this, params string[] values)
         {
-            Contract.Ensures(Contract.Result<string>() != null);
 
             return @this.Coalesce(values) ?? string.Empty;
         }
 
         public static string CoalesceWithEmpty(this string @this, IEnumerable<string> values)
         {
-            Contract.Ensures(Contract.Result<string>() != null);
 
             return @this.Coalesce(values) ?? string.Empty;
         }
-
-        #endregion
-
-        #region ToStringOrNull
-
-        [Pure]
         public static string ToStringOrNull<T>(this T @this)
             where T : class
         {
             if (@this == null) return null;
             return @this.ToString();
         }
-
-        [Pure]
         public static string ToStringOrNull<T>(this T @this, string format, IFormatProvider formatProvider = null)
             where T : class, IFormattable
         {
             if (@this == null) return null;
             return @this.ToString(format, formatProvider);
         }
-
-        [Pure]
         public static string ToStringOrNull<T>(this T? @this)
             where T : struct
         {
             if (!@this.HasValue) return null;
             return @this.Value.ToString();
         }
-
-        [Pure]
         public static string ToStringOrNull<T>(this T? @this, string format, IFormatProvider formatProvider = null)
             where T : struct, IFormattable
         {
             if (!@this.HasValue) return null;
             return @this.Value.ToString(format, formatProvider);
         }
-
-        #endregion
-
-        [Pure]
         public static string SubstringTo(this string @this, int startIndex, int endIndex)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0);
-            Contract.Requires<ArgumentOutOfRangeException>(startIndex <= endIndex || startIndex == endIndex + 1);
-            Contract.Requires<ArgumentOutOfRangeException>(endIndex < @this.Length);
-            Contract.Ensures(Contract.Result<string>() != null);
+            if (@this == null)
+            {
+                throw new ArgumentNullException(nameof(@this), "Contract assertion not met: @this != null");
+            }
+            if (!(startIndex >= 0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "Contract assertion not met: startIndex >= 0");
+            }
+            if (!(startIndex <= endIndex || startIndex == endIndex + 1))
+            {
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "Contract assertion not met: startIndex <= endIndex || startIndex == endIndex + 1");
+            }
+            if (!(endIndex < @this.Length))
+            {
+                throw new ArgumentOutOfRangeException(nameof(endIndex), "Contract assertion not met: endIndex < @this.Length");
+            }
 
             return @this.Substring(startIndex, endIndex - startIndex + 1);
         }
-
-        [Pure]
         public static string Clip(this string @this, int startClipLength, int endClipLength)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Requires<ArgumentOutOfRangeException>(startClipLength >= 0);
-            Contract.Requires<ArgumentOutOfRangeException>(endClipLength >= 0);
-            Contract.Requires<ArgumentOutOfRangeException>(@this.Length - startClipLength - endClipLength >= 0);
-            Contract.Ensures(Contract.Result<string>() != null);
+            if (@this == null)
+            {
+                throw new ArgumentNullException(nameof(@this), "Contract assertion not met: @this != null");
+            }
+            if (!(startClipLength >= 0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(startClipLength), "Contract assertion not met: startClipLength >= 0");
+            }
+            if (!(endClipLength >= 0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(endClipLength), "Contract assertion not met: endClipLength >= 0");
+            }
+            if (!(@this.Length - startClipLength - endClipLength >= 0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(@this), "Contract assertion not met: @this.Length - startClipLength - endClipLength >= 0");
+            }
 
             return @this.Substring(startClipLength, @this.Length - startClipLength - endClipLength);
         }
-
-        [Pure]
         public static string ToXmlEncodedString(this string @this)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Ensures(Contract.Result<string>() != null);
+            if (@this == null)
+            {
+                throw new ArgumentNullException(nameof(@this), "Contract assertion not met: @this != null");
+            }
 
             var sb = new StringBuilder();
             using (var xw = XmlWriter.Create(sb, new XmlWriterSettings
@@ -159,12 +135,12 @@ namespace System
             }
             return sb.ToString().Clip(3, 4);
         }
-
-        [Pure]
         public static string ToXmlDecodedString(this string @this)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Ensures(Contract.Result<string>() != null);
+            if (@this == null)
+            {
+                throw new ArgumentNullException(nameof(@this), "Contract assertion not met: @this != null");
+            }
 
             using (var xw = XmlReader.Create(new StringReader(string.Format("<_>{0}</_>", @this)), new XmlReaderSettings
             {
@@ -181,7 +157,10 @@ namespace System
 
         public static string Indent(this string @this, int width = 4, char indentChar = ' ')
         {
-            Contract.Requires<ArgumentException>(width >= 0);
+            if (!(width >= 0))
+            {
+                throw new ArgumentException("Contract assertion not met: width >= 0", nameof(width));
+            }
 
             return string.Join(
                 Environment.NewLine,

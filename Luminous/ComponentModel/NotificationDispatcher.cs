@@ -1,27 +1,8 @@
-﻿#region License
-// Copyright © 2014 Łukasz Świątkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-namespace Luminous.ComponentModel
+﻿namespace Luminous.ComponentModel
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     public class NotificationDispatcher
@@ -30,12 +11,8 @@ namespace Luminous.ComponentModel
 
         private readonly Dictionary<string, PropertyChangingEventHandler> _changingHandlers;
         private readonly Dictionary<string, PropertyChangedEventHandler> _changedHandlers;
-
-        [ContractInvariantMethod]
         private void ObjectInvariant()
         {
-            Contract.Invariant(_changingHandlers != null);
-            Contract.Invariant(_changedHandlers != null);
         }
 
         public NotificationDispatcher()
@@ -50,7 +27,10 @@ namespace Luminous.ComponentModel
 
         public void RegisterNotifyingObject(NotifyingObject obj)
         {
-            Contract.Requires<ArgumentNullException>(obj != null);
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Contract assertion not met: obj != null");
+            }
 
             RegisterNotifyingObject((INotifyPropertyChanging)obj);
             RegisterNotifyingObject((INotifyPropertyChanged)obj);
@@ -58,21 +38,30 @@ namespace Luminous.ComponentModel
 
         public void RegisterNotifyingObject(INotifyPropertyChanging obj)
         {
-            Contract.Requires<ArgumentNullException>(obj != null);
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Contract assertion not met: obj != null");
+            }
 
             obj.PropertyChanging += (sender, e) => ProcessNotification(sender, e);
         }
 
         public void RegisterNotifyingObject(INotifyPropertyChanged obj)
         {
-            Contract.Requires<ArgumentNullException>(obj != null);
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Contract assertion not met: obj != null");
+            }
 
             obj.PropertyChanged += (sender, e) => ProcessNotification(sender, e);
         }
 
         public void RegisterNotificationHandlingMethods(object handler)
         {
-            Contract.Requires<ArgumentNullException>(handler != null);
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler), "Contract assertion not met: handler != null");
+            }
 
             var methods = handler.GetType().GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
             foreach (var method in methods)
@@ -87,7 +76,10 @@ namespace Luminous.ComponentModel
                     if (changingAttributes.Count > 0)
                     {
                         var handlerDelegate = (PropertyChangingEventHandler)Delegate.CreateDelegate(typeof(PropertyChangingEventHandler), handler, method);
-                        Contract.Assume(handlerDelegate != null);
+                        if (handlerDelegate == null)
+                        {
+                            throw new ArgumentException("Contract assertion not met: handlerDelegate != null", "value");
+                        }
                         foreach (var attribute in changingAttributes)
                         {
                             RegisterNotificationHandler(attribute.PropertyName, handlerDelegate);
@@ -100,7 +92,10 @@ namespace Luminous.ComponentModel
                     if (changedAttributes.Count > 0)
                     {
                         var handlerDelegate = (PropertyChangedEventHandler)Delegate.CreateDelegate(typeof(PropertyChangedEventHandler), handler, method);
-                        Contract.Assume(handlerDelegate != null);
+                        if (handlerDelegate == null)
+                        {
+                            throw new ArgumentException("Contract assertion not met: handlerDelegate != null", "value");
+                        }
                         foreach (var attribute in changedAttributes)
                         {
                             RegisterNotificationHandler(attribute.PropertyName, handlerDelegate);
@@ -112,7 +107,10 @@ namespace Luminous.ComponentModel
 
         public void RegisterNotificationHandler(string propertyName, PropertyChangingEventHandler handler)
         {
-            Contract.Requires<ArgumentNullException>(handler != null);
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler), "Contract assertion not met: handler != null");
+            }
 
             if (!_changingHandlers.ContainsKey(propertyName))
             {
@@ -126,7 +124,10 @@ namespace Luminous.ComponentModel
 
         public void UnregisterNotificationHandler(string propertyName, PropertyChangingEventHandler handler)
         {
-            Contract.Requires<ArgumentNullException>(handler != null);
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler), "Contract assertion not met: handler != null");
+            }
 
             if (_changingHandlers.ContainsKey(propertyName))
             {
@@ -136,7 +137,10 @@ namespace Luminous.ComponentModel
 
         public void RegisterNotificationHandler(string propertyName, PropertyChangedEventHandler handler)
         {
-            Contract.Requires<ArgumentNullException>(handler != null);
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler), "Contract assertion not met: handler != null");
+            }
 
             if (!_changedHandlers.ContainsKey(propertyName))
             {
@@ -150,7 +154,10 @@ namespace Luminous.ComponentModel
 
         public void UnregisterNotificationHandler(string propertyName, PropertyChangedEventHandler handler)
         {
-            Contract.Requires<ArgumentNullException>(handler != null);
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler), "Contract assertion not met: handler != null");
+            }
 
             if (_changedHandlers.ContainsKey(propertyName))
             {

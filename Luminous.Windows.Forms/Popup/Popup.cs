@@ -1,28 +1,9 @@
-﻿#region License
-// Copyright © 2014 Łukasz Świątkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-namespace Luminous.Windows.Forms
+﻿namespace Luminous.Windows.Forms
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
-    using System.Diagnostics.Contracts;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.Text;
@@ -132,7 +113,10 @@ namespace Luminous.Windows.Forms
             get
             {
                 CreateParams cp = base.CreateParams;
-                Contract.Assume(cp != null);
+                if (cp == null)
+                {
+                    throw new ArgumentException("Contract assertion not met: cp != null", "value");
+                }
                 cp.ExStyle |= NativeMethods.WS_EX_NOACTIVATE;
                 if (NonInteractive) cp.ExStyle |= NativeMethods.WS_EX_TRANSPARENT | NativeMethods.WS_EX_LAYERED | NativeMethods.WS_EX_TOOLWINDOW;
                 return cp;
@@ -153,7 +137,10 @@ namespace Luminous.Windows.Forms
         /// <exception cref="T:System.ArgumentNullException"><paramref name="content" /> is <code>null</code>.</exception>
         public Popup(Control content)
         {
-            Contract.Requires<ArgumentNullException>(content != null);
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content), "Contract assertion not met: content != null");
+            }
 
             Content = content;
             FocusOnOpen = true;
@@ -186,15 +173,8 @@ namespace Luminous.Windows.Forms
             content.Paint += (sender, e) => PaintSizeGrip(e);
             UpdateRegion();
         }
-
-        #endregion
-
-        #region Methods
-
-        [ContractInvariantMethod]
         private void ObjectInvariant()
         {
-            Contract.Invariant(Content != null);
         }
 
         /// <summary>

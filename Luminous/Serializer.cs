@@ -1,25 +1,6 @@
-﻿#region License
-// Copyright © 2014 Łukasz Świątkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-namespace Luminous
+﻿namespace Luminous
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
 
@@ -33,13 +14,25 @@ namespace Luminous
         /// </summary>
         public static T Deserialize<T>(byte[] array)
         {
-            Contract.Requires<ArgumentNullException>(array != null);
-            Contract.Requires<ArgumentException>(array.Length > 0);
+            if (array == null)
+            {
+                throw new ArgumentNullException(nameof(array), "Contract assertion not met: array != null");
+            }
+            if (!(array.Length > 0))
+            {
+                throw new ArgumentException("Contract assertion not met: array.Length > 0", nameof(array));
+            }
 
             using (MemoryStream ms = new MemoryStream(array))
             {
-                Contract.Assume(ms.CanSeek);
-                Contract.Assume(ms.Length > 0);
+                if (!(ms.CanSeek))
+                {
+                    throw new ArgumentException("Contract assertion not met: ms.CanSeek", "value");
+                }
+                if (!(ms.Length > 0))
+                {
+                    throw new ArgumentException("Contract assertion not met: ms.Length > 0", "value");
+                }
 
                 BinaryFormatter formatter = new BinaryFormatter();
                 return (T)formatter.Deserialize(ms);
@@ -51,16 +44,20 @@ namespace Luminous
         /// </summary>
         public static byte[] Serialize<T>(T obj)
         {
-            Contract.Requires<ArgumentNullException>(obj != null);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length > 0);
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Contract assertion not met: obj != null");
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(ms, obj);
                 byte[] bytes = ms.ToArray();
-                Contract.Assume(bytes.Length > 0);
+                if (!(bytes.Length > 0))
+                {
+                    throw new ArgumentException("Contract assertion not met: bytes.Length > 0", "value");
+                }
                 return bytes;
             }
         }
@@ -70,7 +67,10 @@ namespace Luminous
         /// </summary>
         public static T CopyBySerialization<T>(this T obj)
         {
-            Contract.Requires<ArgumentNullException>(obj != null);
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Contract assertion not met: obj != null");
+            }
 
             return Deserialize<T>(Serialize<T>(obj));
         }

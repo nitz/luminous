@@ -1,43 +1,7 @@
-﻿#region License
-// Copyright © 2014 Łukasz Świątkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-// TODO: Custom icons (Set/UpdateIcon(source))
-// TODO: Icon without owner set?
-// TODO: SET_BUTTON_ELEVATION_REQUIRED_STATE
-// TODO: TDM_NAVIGATE
-// TODO: ENABLE_[RADIO_]BUTTON (returning radios' state)
-// TODO: CLICK_VERIFICATION
-// TODO: CLICK_RADIO_BUTTON
-// TODO: CLICK_BUTTON
-// TODO: Width algorithm
-// TODO: events: VerificationClicked, RadioButtonClicked, Navigated, Help, ExpandoButtonClicked, Loaded, ButtonClicked
-// TODO: check all
-// TODO: do setting the delegate prevents from finalizing object?
-// TODO: reshowing, after showing
-// TODO: equalize the size of expanded/collapsed text' size
-// TODO: wrapping for buttons
-// TODO: <code> na <em> gdzie trzeba
-
-namespace Luminous.Windows
+﻿namespace Luminous.Windows
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Text;
     using System.Windows.Controls;
@@ -267,7 +231,10 @@ namespace Luminous.Windows
             get { return _customScale; }
             set
             {
-                Contract.Requires<ArgumentOutOfRangeException>(value > 0);
+                if (!(value > 0))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), "Contract assertion not met: value > 0");
+                }
 
                 _customScale = value;
             }

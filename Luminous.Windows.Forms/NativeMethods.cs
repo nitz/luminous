@@ -1,25 +1,6 @@
-#region License
-// Copyright © 2014 £ukasz Œwi¹tkowski
-// http://www.lukesw.net/
-//
-// This library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with this library.  If not, see <http://www.gnu.org/licenses/>.
-#endregion
-
-namespace Luminous.Windows.Forms
+ï»¿namespace Luminous.Windows.Forms
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Drawing;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
@@ -74,7 +55,10 @@ namespace Luminous.Windows.Forms
 
         internal static void AnimateWindow(Control control, int time, AnimationFlags flags)
         {
-            Contract.Requires<ArgumentNullException>(control != null);
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control), "Contract assertion not met: control != null");
+            }
 
             try
             {
@@ -91,7 +75,10 @@ namespace Luminous.Windows.Forms
 
         internal static void SetTopMost(Control control)
         {
-            Contract.Requires<ArgumentNullException>(control != null);
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control), "Contract assertion not met: control != null");
+            }
 
             try
             {
