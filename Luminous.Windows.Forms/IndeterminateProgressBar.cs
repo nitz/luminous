@@ -18,19 +18,15 @@
 
 namespace Luminous.Windows.Forms
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.Linq;
-    using System.Text;
-    using System.Windows.Forms;
+	using System;
+	using System.ComponentModel;
+	using System.Drawing;
+	using System.Windows.Forms;
 
-    /// <summary>
-    /// Windows 8/Phone-like indeterminate progress bar.
-    /// </summary>
-    public partial class IndeterminateProgressBar : Control
+	/// <summary>
+	/// Windows 8/Phone-like indeterminate progress bar.
+	/// </summary>
+	public partial class IndeterminateProgressBar : Control
     {
         public IndeterminateProgressBar()
         {
@@ -76,7 +72,7 @@ namespace Luminous.Windows.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool CausesValidation
+        public new bool CausesValidation
         {
             get { return base.CausesValidation; }
             set { base.CausesValidation = value; }
@@ -92,7 +88,7 @@ namespace Luminous.Windows.Forms
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
-        public ImeMode ImeMode
+        public new ImeMode ImeMode
         {
             get { return base.ImeMode; }
             set { base.ImeMode = value; }
@@ -100,7 +96,7 @@ namespace Luminous.Windows.Forms
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
-        public bool TabStop
+        public new bool TabStop
         {
             get { return base.TabStop; }
             set { base.TabStop = value; }
